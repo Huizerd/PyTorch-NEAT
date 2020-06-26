@@ -26,12 +26,16 @@ class MultiEnvEvaluator:
         self.batch_size = batch_size
         self.max_env_steps = max_env_steps
 
-    def eval_genome(self, genome, config, debug=False):
+    def eval_genome(self, genome, config, debug=False, probes=None):
         net = self.make_net(genome, config, self.batch_size)
 
         fitnesses = np.zeros(self.batch_size)
         states = [env.reset() for env in self.envs]
         dones = [False] * self.batch_size
+        if probes is None:
+            probes = [lambda *args, **kwargs: None for _ in self.envs]
+        else:
+            probes = [probes for _ in self.envs]
 
         step_num = 0
         while True:
@@ -42,7 +46,7 @@ class MultiEnvEvaluator:
                 actions = self.activate_net(
                     net, states, debug=True, step_num=step_num)
             else:
-                actions = self.activate_net(net, states)
+                actions = self.activate_net(net, states, [probe(env) for probe, env in zip(probes, self.envs)])
             assert len(actions) == len(self.envs)
             for i, (env, action, done) in enumerate(zip(self.envs, actions, dones)):
                 if not done:
