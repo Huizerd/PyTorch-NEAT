@@ -11,6 +11,10 @@ Adaptive HyperNEAT is an extension to HyperNEAT which indirectly encodes both th
 PyTorch NEAT builds upon [NEAT-Python](https://github.com/CodeReclaimers/neat-python) by providing some functions which can turn a NEAT-Python genome into either a recurrent PyTorch network or a PyTorch CPPN for use in HyperNEAT or Adaptive HyperNEAT.
 We also provide some environments in which to test NEAT and Adaptive HyperNEAT, and a more involved example using the CPPN infrastructure with Adaptive HyperNEAT on a T-maze.
 
+## Installation
+
+Two requirement files are provided: `requirements.txt` and `requirements_legacy.txt`, where the legacy file lists the package versions originally intended by the authors. It appears that the legacy setup achieves better performance (as tested with `python -m examples.simple.main`), most likely due to `torch==0.4.0` and `gym==0.10.5`.
+
 ## Examples
 The following snippet turns a NEAT-Python genome into a recurrent PyTorch network:
 ```
